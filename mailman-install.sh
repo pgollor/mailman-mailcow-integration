@@ -65,7 +65,7 @@ while [ -z "${MAILMAN_SMTP_USER}" ]; do
 done
 
 echo "Mailman list domain: ${MAILMAN_LIST_DOMAIN}"
-echo "Mailman admin email address: ${MAILMAN_ADMIN_EMAIL}"
+echo "Mailman admin user email address: ${MAILMAN_ADMIN_EMAIL}"
 echo "SMTP user for mailman: ${MAILMAN_SMTP_USER}"
 
 
@@ -86,3 +86,8 @@ MAILMAN_SMTP_HOST_PASSWORD=${MAILMAN_SMTP_PASSWORD}
 MAILMAN_SMTP_USE_TLS=true
 
 EOF
+
+
+# some replace in mailman config files
+sed -i "/^site_owner:/c\\\site_owner:${MAILMAN_SMTP_USER}" data/mailman/core/mailman-extra.cfg
+sed -i "/^DEFAULT_FROM_EMAIL/c\\\DEFAULT_FROM_EMAIL='${MAILMAN_SMTP_USER}'" data/mailman/web/settings_local.py
