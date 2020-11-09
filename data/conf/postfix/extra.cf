@@ -1,0 +1,13 @@
+# mailman
+unknown_local_recipient_reject_code = 550
+owner_request_special = no
+relay_recipient_maps = proxy:mysql:/opt/postfix/conf/sql/mysql_relay_recipient_maps.cf,
+	regexp:/opt/mailman/var/data/postfix_lmtp
+virtual_mailbox_maps = proxy:mysql:/opt/postfix/conf/sql/mysql_virtual_mailbox_maps.cf,
+	regexp:/opt/mailman/var/data/postfix_lmtp
+transport_maps = pcre:/opt/postfix/conf/custom_transport.pcre,
+  pcre:/opt/postfix/conf/local_transport,
+  proxy:mysql:/opt/postfix/conf/sql/mysql_transport_maps.cf,
+	regexp:/opt/mailman/var/data/postfix_lmtp
+local_recipient_maps = regexp:/opt/mailman/var/data/postfix_lmtp
+
