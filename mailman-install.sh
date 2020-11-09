@@ -17,8 +17,11 @@ fi
 
 echo "I need to ask you some questions of your server configuration. Please enter the needed information or press enter if a default value is present."
 # ask for domain
+DETECTED_DOMAIN=$(grep MAILCOW_HOSTNAME mailcow.conf)
+DETECTED_DOMAIN=$(expr ${DETECTED_DOMAIN} : '^MAILCOW_HOSTNAME=[^.]\+\.\(.*\..*$\)')
 while [ -z "${MAILMAN_DOMAIN}" ]; do
-	read -p "Mail domain like example.com: " -e MAILMAN_DOMAIN
+	read -p "Mail domain like example.com [${DETECTED_DOMAIN}]: " -e MAILMAN_DOMAIN
+	[ -z "${MAILMAN_DOMAIN}" ] && MAILMAN_DOMAIN="${DETECTED_DOMAIN}"
 	DOTS=${MAILMAN_DOMAIN//[^.]};
 	if [ ${#DOTS} -lt 1 ] && [ ! -z ${MAILMAN_DOMAIN} ]; then
 		echo "${MAILMAN_DOMAIN} seems not to be a vaild mail domain"
@@ -37,7 +40,7 @@ while [ -z "${MAILMAN_LIST_DOMAIN}" ]; do
 	fi
 done
 
-# admin email address
+# ask for admin email address
 while [ -z "${MAILMAN_ADMIN_EMAIL}" ]; do
 	read -p "Email address for the mailman admin user [listadmin@${MAILMAN_DOMAIN}]: " -e MAILMAN_ADMIN_EMAIL
 	[ -z "${MAILMAN_ADMIN_EMAIL}" ] && MAILMAN_ADMIN_EMAIL="listadmin@${MAILMAN_DOMAIN}" # replace with default if is empty
@@ -48,7 +51,7 @@ while [ -z "${MAILMAN_ADMIN_EMAIL}" ]; do
 	fi
 done
 
-# mailman smtp user email address
+# ask for mailman smtp user email address
 while [ -z "${MAILMAN_SMTP_USER}" ]; do
 	read -p "SMTP user for mailman [mailman@${MAILMAN_DOMAIN}]: " -e MAILMAN_SMTP_USER
 	[ -z "${MAILMAN_SMTP_USER}" ] && MAILMAN_SMTP_USER="mailman@${MAILMAN_DOMAIN}" # replace with default if is empty
