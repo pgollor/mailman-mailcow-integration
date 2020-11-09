@@ -60,9 +60,9 @@ while [ -z "${MAILMAN_SMTP_USER}" ]; do
 		echo "Invalid email detected"
 		MAILMAN_SMTP_USER=
 	fi
-
-	read -p "Passwort for ${MAILMAN_SMTP_USER}: " -e MAILMAN_SMTP_PASSWORD
 done
+
+read -s -p "Password for ${MAILMAN_SMTP_USER}: " -e MAILMAN_SMTP_PASSWORD1
 
 echo "Mailman list domain: ${MAILMAN_LIST_DOMAIN}"
 echo "Mailman admin user email address: ${MAILMAN_ADMIN_EMAIL}"
